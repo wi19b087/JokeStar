@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/home"
+        android:icon="@drawable/ic_baseline_home_24"
+        android:title="@string/DEhome" />
+    <item
+        android:id="@+id/logInOut"
+        android:icon="@drawable/ic_baseline_login_24"
+        android:title="@string/DElogin_logout" />
+    <item
+        android:id="@+id/aboutUs"
+        android:icon="@drawable/ic_baseline_info_24"
+        android:title="@string/DEabout_us" />
+    <item
+        android:id="@+id/register"
+        android:icon="@drawable/ic_baseline_group_add_24"
+        android:title="@string/DEregister" />
+</menu>

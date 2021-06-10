@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "532750168903",
+    "firebase_url": "https://fh-witze-app-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "fh-witze-app",
+    "storage_bucket": "fh-witze-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:532750168903:android:4558af5cfedc779cbcd262",
+        "android_client_info": {
+          "package_name": "com.example.jokestarapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "532750168903-toltgndf8mmu1ie5mje3kuk4e8qj35pc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.jokestarapplication",
+            "certificate_hash": "36c87a15e86c56b40eef6c7e241028680b689586"
+          }
+        },
+        {
+          "client_id": "532750168903-ir1l0dm07tujijok9m2f4nrlsn2b2uqb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCmU8jICOi_sYWtQ1tFWMkKojT7Z435Rv4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "532750168903-ir1l0dm07tujijok9m2f4nrlsn2b2uqb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
