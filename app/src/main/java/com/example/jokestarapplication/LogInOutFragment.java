@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
@@ -164,10 +165,14 @@ public class LogInOutFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("AUTH", "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Toast.makeText(getActivity(), "Google Login successful",
+                                    Toast.LENGTH_LONG).show();
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("AUTH", "signInWithCredential:failure", task.getException());
+                            Toast.makeText(getActivity(), "Google Login failed",
+                                    Toast.LENGTH_LONG).show();
                             updateUI(null);
                         }
 
@@ -185,5 +190,7 @@ public class LogInOutFragment extends Fragment {
     }
     private void googleSignOut() {
         FirebaseAuth.getInstance().signOut();
+        Toast.makeText(getActivity(), "Google Logout successful",
+                Toast.LENGTH_LONG).show();
     }
 }
