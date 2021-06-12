@@ -72,6 +72,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
+            //account.getDisplayName()
             Log.d("AUTH", "User is logged-in automatically");
             Toast.makeText(this, "Google Login automatically (already signed in previously)",
                     Toast.LENGTH_LONG).show();

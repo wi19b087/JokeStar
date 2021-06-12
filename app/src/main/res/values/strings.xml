@@ -9,6 +9,6 @@
     <string name="DEregister">Registrieren</string>
     <string name="DEhome">Start</string>
     <string name="DEabout_us">Über uns</string>
-    <string name="DElogin_logout">Login/Logout</string>
+    <string name="DElogin_logout">Nicht eingeloggt</string>
     <string name="DEcategories">Kategorien</string>
 </resources>
