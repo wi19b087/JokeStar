@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -30,14 +29,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
-import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import org.jetbrains.annotations.NotNull;
-
-import java.util.concurrent.Executor;
 
 //TODO: Login/out process
 
@@ -52,10 +45,10 @@ public class LogInOutFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+    GoogleSignInClient mGoogleSignInClient;
     private Button btnGoogleLogin;
     private Button btnGoogleLogout;
     private TextView displayName;
-    GoogleSignInClient mGoogleSignInClient;
     private FirebaseAuth mAuth;
     private NavigationView navigationView;
     private TextView displayNameSideNav;
@@ -109,7 +102,7 @@ public class LogInOutFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(main);
-        if(account != null) {
+        if (account != null) {
             // Auto-Login to firebase with previous account
             Log.d("AUTH", "Auto-Login to firebase with previous account");
             firebaseAuthWithGoogle(account.getIdToken());
@@ -146,13 +139,13 @@ public class LogInOutFragment extends Fragment {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        updateUI(currentUser);
+        updateUILoginFragment(currentUser);
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable @org.jetbrains.annotations.Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode == 100) {
+        if (requestCode == 100) {
             //init task
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
@@ -181,26 +174,28 @@ public class LogInOutFragment extends Fragment {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Toast.makeText(getActivity(), "Google Login successful",
                                     Toast.LENGTH_LONG).show();
-                            updateUI(user);
+                            updateUILoginFragment(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("AUTH", "signInWithCredential:failure", task.getException());
                             Toast.makeText(getActivity(), "Google Login failed",
                                     Toast.LENGTH_LONG).show();
-                            updateUI(null);
+                            updateUILoginFragment(null);
                         }
 
                     }
                 });
     }
 
-    private void updateUI(FirebaseUser user) {
-        if(user != null) {
-            Log.d("AUTH", "Update GUI, displayName: " + user.getDisplayName() );
+    private void updateUILoginFragment(FirebaseUser user) {
+        if (user != null) {
+            Log.d("AUTH", "Update GUI, displayName: " + user.getDisplayName());
             displayName.setText("Hallo " + user.getDisplayName());
-        }
-        else {
-            Log.d("AUTH", "Update GUI, Kein user gefunden" );
+            MainActivity.displayUserName =  user.getDisplayName();
+            MainActivity.displayUserEmail =  user.getEmail();
+            updateSideNav();
+        } else {
+            Log.d("AUTH", "Update GUI, Kein user gefunden");
             displayName.setText("Nicht eingeloggt");
         }
 
@@ -210,6 +205,7 @@ public class LogInOutFragment extends Fragment {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, 100);
     }
+
     private void googleSignOut() {
         // signout fireabase
         FirebaseAuth.getInstance().signOut();
@@ -220,15 +216,30 @@ public class LogInOutFragment extends Fragment {
                 .addOnCompleteListener(main, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        updateUI(null);
+                        updateUILoginFragment(null);
                     }
                 });
 
         Toast.makeText(getActivity(), "Google Logout successful",
                 Toast.LENGTH_LONG).show();
-        updateUI(null);
+        updateUILoginFragment(null);
+
         //Reset global var and side nav
         MainActivity.displayUserName = "Gast";
         MainActivity.displayUserEmail = "Gast";
+
+        updateSideNav();
+
+    }
+
+    private void updateSideNav() {
+        // Reset Name and email in side nav immediately
+        navigationView = ((MainActivity) getActivity()).findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(((MainActivity) getActivity()));
+        View headerView = navigationView.getHeaderView(0);
+        TextView displayNameSideNav = (TextView) headerView.findViewById(R.id.displayName);
+        TextView displayEmailSideNav = (TextView) headerView.findViewById(R.id.displayEmail);
+        displayNameSideNav.setText(MainActivity.displayUserName);
+        displayEmailSideNav.setText(MainActivity.displayUserEmail);
     }
 }
