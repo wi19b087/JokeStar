@@ -22,6 +22,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.material.navigation.NavigationView;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.onFragmentBtnSelected {
 
@@ -39,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
+    private List<JokeCategory> categories;
+    private Bundle bundle;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,11 +63,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
 
+        categories = DemoData();
+        bundle = new Bundle();
+        bundle.putSerializable("Categories", (Serializable) categories);
+
         //load default fragment
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.container_fragment, new MainFragment());
+        MainFragment mainFragment = new MainFragment();
+        mainFragment.setArguments(bundle);
+        fragmentTransaction.replace(R.id.container_fragment, mainFragment);
         fragmentTransaction.commit();
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -122,7 +136,19 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
                 fragmentManager = getSupportFragmentManager();
                 fragmentTransaction = fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.container_fragment, new MainFragment());
+                MainFragment mainFragment = new MainFragment();
+                mainFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.container_fragment, mainFragment);
+                fragmentTransaction.commit();
+
+                break;
+            case R.id.newJoke:
+
+                fragmentManager = getSupportFragmentManager();
+                fragmentTransaction = fragmentManager.beginTransaction();
+                NewJokeFragment newJokeFragment = new NewJokeFragment();
+                newJokeFragment.setArguments(bundle);
+                fragmentTransaction.replace(R.id.container_fragment, newJokeFragment);
                 fragmentTransaction.commit();
 
                 break;
@@ -153,6 +179,17 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
 
         return true;
+    }
+
+    private List<JokeCategory> DemoData() {
+        List<JokeCategory> data = new ArrayList<>();
+        data.add(new JokeCategory("Short Jokes"));
+        data.add(new JokeCategory("Long Jokes"));
+        data.add(new JokeCategory("One Liner"));
+        data.add(new JokeCategory("Dumb Jokes"));
+        data.add(new JokeCategory("Chuck Norris"));
+
+        return data;
     }
 
     @Override
