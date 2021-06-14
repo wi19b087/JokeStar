@@ -84,7 +84,7 @@ public class NewJokeFragment extends Fragment {
     }
 
     private void addJokeToFirebase(Context ctx, Joke joke) {
-        // Add a new joke as a document with a generated ID to collection "Jokes"
+        // Add a new joke as a document with a generated ID to collection "Jokes".
         db.collection("Jokes")
                 .add(joke)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
