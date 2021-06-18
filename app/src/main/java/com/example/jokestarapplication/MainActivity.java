@@ -28,7 +28,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.onFragmentBtnSelected {
+public class    MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.onFragmentBtnSelected {
 
 
     //global available user data
@@ -131,52 +131,39 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         drawerLayout.closeDrawer(GravityCompat.START);
 
+
+        bundle = new Bundle();
+        bundle.putSerializable("Categories", (Serializable) categories);
+
+        fragmentManager = getSupportFragmentManager();
+        fragmentTransaction = fragmentManager.beginTransaction();
+
         switch (item.getItemId()) {
             case R.id.home:
-
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
                 MainFragment mainFragment = new MainFragment();
                 mainFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.container_fragment, mainFragment);
-                fragmentTransaction.commit();
-
                 break;
-            case R.id.newJoke:
 
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
+            case R.id.newJoke:
                 NewJokeFragment newJokeFragment = new NewJokeFragment();
                 newJokeFragment.setArguments(bundle);
                 fragmentTransaction.replace(R.id.container_fragment, newJokeFragment);
-                fragmentTransaction.commit();
-
                 break;
+
             case R.id.logInOut:
-
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, new LogInOutFragment());
-                fragmentTransaction.commit();
-
                 break;
             case R.id.aboutUs:
-
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, new AboutUsFragment());
-                fragmentTransaction.commit();
-
                 break;
+
             case R.id.register:
-
-                fragmentManager = getSupportFragmentManager();
-                fragmentTransaction = fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.container_fragment, new RegisterFragment());
-                fragmentTransaction.commit();
-
                 break;
+
         }
+        fragmentTransaction.commit();
 
         return true;
     }
@@ -190,6 +177,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         data.add(new JokeCategory("Chuck Norris"));
 
         return data;
+    }
+
+    public void updateCategories(List<JokeCategory> list){
+        categories = list;
     }
 
     @Override

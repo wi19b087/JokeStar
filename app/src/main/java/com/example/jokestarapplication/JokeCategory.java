@@ -37,5 +37,9 @@ public class JokeCategory  {
     public String toString() {
         return name;
     }
+
+    public void addJoke(Joke joke) {
+        jokes.add(joke);
+    }
 }
 

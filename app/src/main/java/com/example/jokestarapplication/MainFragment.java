@@ -55,6 +55,12 @@ public class MainFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        categories = (List<JokeCategory>) getArguments().getSerializable("Categories");
+        rvcategories.getAdapter().notifyDataSetChanged();
+        super.onResume();
+    }
 
     @Override
     public void onAttach(@NonNull Context context) {

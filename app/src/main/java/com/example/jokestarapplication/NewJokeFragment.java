@@ -26,6 +26,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.type.DateTime;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -36,6 +37,7 @@ public class NewJokeFragment extends Fragment {
     private List<JokeCategory> categoryList;
     private EditText etnewJoke;
     private Button btsend;
+    private Bundle bundle;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -77,10 +79,13 @@ public class NewJokeFragment extends Fragment {
         String currentCategory = getSelectedCategory(v).getName();
         String currentUserName = mAuth.getCurrentUser().getDisplayName();
         String currentUserId = mAuth.getCurrentUser().getUid();
-        Joke joke = new Joke(etnewJoke.getText().toString(), Calendar.getInstance().getTime(), currentCategory, currentUserName, currentUserId ); //TODO: add author
+        Joke joke = new Joke(etnewJoke.getText().toString(), Calendar.getInstance().getTime(), currentCategory, currentUserName, currentUserId );
+        getSelectedCategory(v).addJoke(joke);
         Log.d("SEND_JOKE", "Joke JSON: " + joke.text + " ::: " + joke.postedDate + " ::: " + joke.author );
         addJokeToFirebase(this.getContext(), joke);
         etnewJoke.setText("");
+
+        ((MainActivity) getActivity()).updateCategories(categoryList);
     }
 
     private void addJokeToFirebase(Context ctx, Joke joke) {
