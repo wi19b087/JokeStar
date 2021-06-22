@@ -14,7 +14,7 @@
         android:theme="@style/Theme.JokeStarApplication">
         <activity android:name=".ActivityCategory"></activity>
         <activity
-            android:name=".MainActivity"
+            android:name=".ActivityMain"
             android:theme="@style/Theme.JokeStarApplication.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

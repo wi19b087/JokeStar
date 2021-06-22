@@ -21,7 +21,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.Calendar;
 import java.util.List;
 
-public class NewJokeFragment extends Fragment {
+public class FragmentNewJoke extends Fragment {
 
     private Spinner spCategories;
     private List<JokeCategory> categoryList;
@@ -77,7 +77,7 @@ public class NewJokeFragment extends Fragment {
         addJokeToFirebase(this.getContext(), joke);
         etnewJoke.setText("");
 
-        ((MainActivity) getActivity()).updateCategories(categoryList);
+        ((ActivityMain) getActivity()).updateCategories(categoryList);
     }
 
     private void addJokeToFirebase(Context ctx, Joke joke) {

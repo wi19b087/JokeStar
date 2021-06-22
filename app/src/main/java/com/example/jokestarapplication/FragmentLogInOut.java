@@ -25,7 +25,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-public class LogInOutFragment extends Fragment {
+public class FragmentLogInOut extends Fragment {
 
     GoogleSignInClient mGoogleSignInClient;
     private TextView displayName;
@@ -43,7 +43,7 @@ public class LogInOutFragment extends Fragment {
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        MainActivity main = (MainActivity) getActivity();
+        ActivityMain main = (ActivityMain) getActivity();
         mGoogleSignInClient = GoogleSignIn.getClient(main, gso);
 
         // Initialize Firebase Auth
@@ -100,7 +100,7 @@ public class LogInOutFragment extends Fragment {
     }
 
     private void firebaseAuthWithGoogle(String idToken) {
-        MainActivity mainActivity = (MainActivity) getActivity();
+        ActivityMain mainActivity = (ActivityMain) getActivity();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
                 .addOnCompleteListener(mainActivity, task -> {
@@ -126,8 +126,8 @@ public class LogInOutFragment extends Fragment {
         if (user != null) {
             Log.d("AUTH", "Update GUI, displayName: " + user.getDisplayName());
             displayName.setText("Hallo " + user.getDisplayName());
-            MainActivity.displayUserName = user.getDisplayName();
-            MainActivity.displayUserEmail = user.getEmail();
+            ActivityMain.displayUserName = user.getDisplayName();
+            ActivityMain.displayUserEmail = user.getEmail();
             updateSideNav();
         } else {
             Log.d("AUTH", "Update GUI, Kein user gefunden");
@@ -146,7 +146,7 @@ public class LogInOutFragment extends Fragment {
         FirebaseAuth.getInstance().signOut();
 
         //mGoogleSignInClient - to prevent auto re-login
-        MainActivity main = (MainActivity) getActivity();
+        ActivityMain main = (ActivityMain) getActivity();
         mGoogleSignInClient.signOut()
                 .addOnCompleteListener(main, task -> updateUILoginFragment(null));
 
@@ -155,8 +155,8 @@ public class LogInOutFragment extends Fragment {
         updateUILoginFragment(null);
 
         //Reset global var and side nav
-        MainActivity.displayUserName = "Gast";
-        MainActivity.displayUserEmail = "Gast";
+        ActivityMain.displayUserName = "Gast";
+        ActivityMain.displayUserEmail = "Gast";
 
         updateSideNav();
 
@@ -165,11 +165,11 @@ public class LogInOutFragment extends Fragment {
     private void updateSideNav() {
         // Reset Name and email in side nav immediately
         NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
-        navigationView.setNavigationItemSelectedListener(((MainActivity) getActivity()));
+        navigationView.setNavigationItemSelectedListener(((ActivityMain) getActivity()));
         View headerView = navigationView.getHeaderView(0);
         TextView displayNameSideNav = headerView.findViewById(R.id.displayName);
         TextView displayEmailSideNav = headerView.findViewById(R.id.displayEmail);
-        displayNameSideNav.setText(MainActivity.displayUserName);
-        displayEmailSideNav.setText(MainActivity.displayUserEmail);
+        displayNameSideNav.setText(ActivityMain.displayUserName);
+        displayEmailSideNav.setText(ActivityMain.displayUserEmail);
     }
 }

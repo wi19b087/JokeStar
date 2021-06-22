@@ -31,7 +31,7 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = inflater.inflate(R.layout.joke_list_item, parent, false);
+        View view = inflater.inflate(R.layout.list_item_joke, parent, false);
 
         return new JokeViewHolder(view);
     }

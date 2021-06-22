@@ -11,13 +11,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.List;
 
-public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapter.CategoryViewHolder> {
+public class AdapterCategoryList extends RecyclerView.Adapter<AdapterCategoryList.CategoryViewHolder> {
 
     private List<JokeCategory> mItems;
     private Context mContext;
     private ListItemClickListener mListItemClickListener;
 
-    public CategoryListAdapter(List<JokeCategory> mItems, Context mContext, ListItemClickListener mListItemClickListener) {
+    public AdapterCategoryList(List<JokeCategory> mItems, Context mContext, ListItemClickListener mListItemClickListener) {
         this.mItems = mItems;
         this.mContext = mContext;
         this.mListItemClickListener = mListItemClickListener;
@@ -25,7 +25,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
 
     @Override
     public int getItemViewType(final int position) {
-        return R.layout.category_list_item;
+        return R.layout.list_item_category;
     }
 
     @NonNull
@@ -36,7 +36,7 @@ public class CategoryListAdapter extends RecyclerView.Adapter<CategoryListAdapte
         mContext = context;
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View view = inflater.inflate(R.layout.category_list_item, parent, false);
+        View view = inflater.inflate(R.layout.list_item_category, parent, false);
 
         return new CategoryViewHolder(view);
     }

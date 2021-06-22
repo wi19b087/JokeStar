@@ -13,10 +13,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import java.util.LinkedList;
 import java.util.List;
 
-public class MainFragment extends Fragment implements CategoryListAdapter.ListItemClickListener {
+public class FragmentMain extends Fragment implements AdapterCategoryList.ListItemClickListener {
 
     private RecyclerView rvcategories;
     private List<JokeCategory> categories;
@@ -35,7 +34,7 @@ public class MainFragment extends Fragment implements CategoryListAdapter.ListIt
         rvcategories = view.findViewById(R.id.rvcategories);
         rvcategories.setHasFixedSize(true);
         rvcategories.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        CategoryListAdapter mAdapter = new CategoryListAdapter(categories, getContext(), this);
+        AdapterCategoryList mAdapter = new AdapterCategoryList(categories, getContext(), this);
         rvcategories.setAdapter(mAdapter);
 
         return view;

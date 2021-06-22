@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class ActivityMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     //global available user data
@@ -67,9 +67,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         fragmentManager = getSupportFragmentManager();
         fragmentTransaction = fragmentManager.beginTransaction();
-        MainFragment mainFragment = new MainFragment();
-        mainFragment.setArguments(bundle);
-        fragmentTransaction.replace(R.id.container_fragment, mainFragment);
+        FragmentMain fragmentMain = new FragmentMain();
+        fragmentMain.setArguments(bundle);
+        fragmentTransaction.replace(R.id.container_fragment, fragmentMain);
         fragmentTransaction.commit();
 
         // Configure sign-in to request the user's ID, email address, and basic
@@ -136,26 +136,26 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         switch (item.getItemId()) {
             case R.id.home:
-                MainFragment mainFragment = new MainFragment();
-                mainFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.container_fragment, mainFragment);
+                FragmentMain fragmentMain = new FragmentMain();
+                fragmentMain.setArguments(bundle);
+                fragmentTransaction.replace(R.id.container_fragment, fragmentMain);
                 break;
 
             case R.id.newJoke:
-                NewJokeFragment newJokeFragment = new NewJokeFragment();
-                newJokeFragment.setArguments(bundle);
-                fragmentTransaction.replace(R.id.container_fragment, newJokeFragment);
+                FragmentNewJoke fragmentNewJoke = new FragmentNewJoke();
+                fragmentNewJoke.setArguments(bundle);
+                fragmentTransaction.replace(R.id.container_fragment, fragmentNewJoke);
                 break;
 
             case R.id.logInOut:
-                fragmentTransaction.replace(R.id.container_fragment, new LogInOutFragment());
+                fragmentTransaction.replace(R.id.container_fragment, new FragmentLogInOut());
                 break;
             case R.id.aboutUs:
-                fragmentTransaction.replace(R.id.container_fragment, new AboutUsFragment());
+                fragmentTransaction.replace(R.id.container_fragment, new FragmentAboutUs());
                 break;
 
             case R.id.register:
-                fragmentTransaction.replace(R.id.container_fragment, new RegisterFragment());
+                fragmentTransaction.replace(R.id.container_fragment, new FragmentRegister());
                 break;
 
         }
