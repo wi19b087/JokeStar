@@ -22,6 +22,7 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.type.DateTime;
@@ -64,7 +65,12 @@ public class NewJokeFragment extends Fragment {
         btsend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SendJoke(v);
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null){
+                    SendJoke(v);
+                } else {
+                    Toast.makeText(view.getContext(), "Please LogIn to Send your Joke", Toast.LENGTH_LONG).show();
+                }
             }
         });
 
