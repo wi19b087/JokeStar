@@ -15,7 +15,7 @@ import android.view.ViewGroup;
 
 import java.util.List;
 
-public class FragmentMain extends Fragment implements AdapterCategoryList.ListItemClickListener {
+public class FragmentMain extends Fragment implements AdapterCategoryList.ListItemClickListener{
 
     private RecyclerView rvcategories;
     private List<JokeCategory> categories;

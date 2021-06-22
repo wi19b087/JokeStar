@@ -62,6 +62,9 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
             btJokeComments = itemView.findViewById(R.id.btJokeComments);
             btJokeUp = itemView.findViewById(R.id.btJokeUp);
             btJokeDown = itemView.findViewById(R.id.btJokeDown);
+
+            btJokeUp.setOnClickListener(this);
+            btJokeDown.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
@@ -78,6 +81,17 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
                 mListItemClickListener.onListItemClick(joke);
             }
 
+            int clickedIndex = getAdapterPosition();
+            Joke joke = mItems.get(clickedIndex);
+            switch (v.getId()) {
+                case R.id.btJokeUp:
+                    joke.votes +=1;
+                    break;
+                case R.id.btJokeDown:
+                    joke.votes -=1;
+                    break;
+            }
+            notifyDataSetChanged();
         }
     }
 }

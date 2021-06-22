@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -55,10 +56,6 @@ public class AdapterCategoryList extends RecyclerView.Adapter<AdapterCategoryLis
         void onListItemClick(JokeCategory item);
     }
 
-    public void setOnListItemClickListener(ListItemClickListener listItemClickListener) {
-        mListItemClickListener = listItemClickListener;
-    }
-
     public class CategoryViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvCatName, tvCatNum;
@@ -68,14 +65,6 @@ public class AdapterCategoryList extends RecyclerView.Adapter<AdapterCategoryLis
             tvCatName = itemView.findViewById(R.id.tvCatName);
             tvCatNum = itemView.findViewById(R.id.tvCatNum);
             itemView.setOnClickListener(this);
-        }
-
-        public TextView getTvCatName() {
-            return tvCatName;
-        }
-
-        public TextView getTvCatNum() {
-            return tvCatNum;
         }
 
         public void bind(int position) {

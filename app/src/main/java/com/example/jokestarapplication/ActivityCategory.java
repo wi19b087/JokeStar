@@ -5,10 +5,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ActivityCategory extends AppCompatActivity {
+public class ActivityCategory extends AppCompatActivity implements View.OnClickListener {
 
     public static final String KEY_EXTRACATEGORY = "JokeList";
     private JokeCategory jokeCategory;
@@ -33,5 +34,10 @@ public class ActivityCategory extends AppCompatActivity {
 
         mAdapter = new AdapterJokeList(jokeCategory.getJokes());
         rvJokeList.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void onClick(View v) {
+
     }
 }
