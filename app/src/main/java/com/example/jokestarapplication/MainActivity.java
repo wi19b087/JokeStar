@@ -24,11 +24,10 @@ import com.google.android.material.navigation.NavigationView;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 
-public class    MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener, MainFragment.onFragmentBtnSelected {
+public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
 
     //global available user data
@@ -38,9 +37,6 @@ public class    MainActivity extends AppCompatActivity implements NavigationView
     private TextView displayName;
     private TextView displayEmail;
     private DrawerLayout drawerLayout;
-    private ActionBarDrawerToggle actionBarDrawerToggle;
-    private Toolbar toolbar;
-    private NavigationView navigationView;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
 
@@ -51,14 +47,14 @@ public class    MainActivity extends AppCompatActivity implements NavigationView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        toolbar = findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         drawerLayout = findViewById(R.id.drawer);
-        navigationView = findViewById(R.id.navigationView);
+        NavigationView navigationView = findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(this);
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open, R.string.close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.setDrawerIndicatorEnabled(true);
         actionBarDrawerToggle.syncState();
@@ -88,8 +84,8 @@ public class    MainActivity extends AppCompatActivity implements NavigationView
 
         // Side navigation elements (needs headerView since sidenav can be hidden (null)
         View headerView = navigationView.getHeaderView(0);
-        displayName = (TextView) headerView.findViewById(R.id.displayName);
-        displayEmail = (TextView) headerView.findViewById(R.id.displayEmail);
+        displayName = headerView.findViewById(R.id.displayName);
+        displayEmail = headerView.findViewById(R.id.displayEmail);
 
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if (account != null) {
@@ -113,12 +109,12 @@ public class    MainActivity extends AppCompatActivity implements NavigationView
         //Side nav vars
         Log.d("AUTH", "side nav vars: " + displayUserName);
         Log.d("AUTH", "side nav vars: " + displayUserEmail);
-       // if (displayUserName != null) {
-            displayName.setText(displayUserName);
-       // }
-       // if (displayUserEmail != null) {
-            displayEmail.setText(displayUserEmail);
-      //  }
+        // if (displayUserName != null) {
+        displayName.setText(displayUserName);
+        // }
+        // if (displayUserEmail != null) {
+        displayEmail.setText(displayUserEmail);
+        //  }
 
 
     }
@@ -179,14 +175,8 @@ public class    MainActivity extends AppCompatActivity implements NavigationView
         return data;
     }
 
-    public void updateCategories(List<JokeCategory> list){
+    public void updateCategories(List<JokeCategory> list) {
         categories = list;
-    }
-
-    @Override
-    public void onButtonSelected() {
-
-
     }
 
 }

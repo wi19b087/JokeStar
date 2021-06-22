@@ -2,11 +2,6 @@ package com.example.jokestarapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,33 +10,26 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 
-import org.jetbrains.annotations.NotNull;
-
 public class LogInOutFragment extends Fragment {
 
     GoogleSignInClient mGoogleSignInClient;
-    private Button btnGoogleLogin;
-    private Button btnGoogleLogout;
     private TextView displayName;
     private FirebaseAuth mAuth;
-    private NavigationView navigationView;
-    private TextView displayNameSideNav;
-    private TextView displayEmailSideNav;
 
 
     @Override
@@ -74,22 +62,12 @@ public class LogInOutFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_log_in_out, container, false);
-        btnGoogleLogin = v.findViewById(R.id.buttonGoogleLogin);
-        btnGoogleLogout = v.findViewById(R.id.buttonGoogleLogout);
+        Button btnGoogleLogin = v.findViewById(R.id.buttonGoogleLogin);
+        Button btnGoogleLogout = v.findViewById(R.id.buttonGoogleLogout);
         displayName = v.findViewById(R.id.displayName);
 
-        btnGoogleLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                googleSignIn();
-            }
-        });
-        btnGoogleLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                googleSignOut();
-            }
-        });
+        btnGoogleLogin.setOnClickListener(v1 -> googleSignIn());
+        btnGoogleLogout.setOnClickListener(v12 -> googleSignOut());
 
         return v;
     }
@@ -111,7 +89,7 @@ public class LogInOutFragment extends Fragment {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
-                Log.d("AUTH", "firebaseAuthWithGoogle:" + account.getId());
+                Log.d("AUTH", "firebaseAuthWithGoogle:" + (account != null ? account.getId() : null));
                 firebaseAuthWithGoogle(account.getIdToken());
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
@@ -125,25 +103,22 @@ public class LogInOutFragment extends Fragment {
         MainActivity mainActivity = (MainActivity) getActivity();
         AuthCredential credential = GoogleAuthProvider.getCredential(idToken, null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(mainActivity, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull @NotNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("AUTH", "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getActivity(), "Google Login successful",
-                                    Toast.LENGTH_LONG).show();
-                            updateUILoginFragment(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w("AUTH", "signInWithCredential:failure", task.getException());
-                            Toast.makeText(getActivity(), "Google Login failed",
-                                    Toast.LENGTH_LONG).show();
-                            updateUILoginFragment(null);
-                        }
-
+                .addOnCompleteListener(mainActivity, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d("AUTH", "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        Toast.makeText(getActivity(), "Google Login successful",
+                                Toast.LENGTH_LONG).show();
+                        updateUILoginFragment(user);
+                    } else {
+                        // If sign in fails, display a message to the user.
+                        Log.w("AUTH", "signInWithCredential:failure", task.getException());
+                        Toast.makeText(getActivity(), "Google Login failed",
+                                Toast.LENGTH_LONG).show();
+                        updateUILoginFragment(null);
                     }
+
                 });
     }
 
@@ -151,8 +126,8 @@ public class LogInOutFragment extends Fragment {
         if (user != null) {
             Log.d("AUTH", "Update GUI, displayName: " + user.getDisplayName());
             displayName.setText("Hallo " + user.getDisplayName());
-            MainActivity.displayUserName =  user.getDisplayName();
-            MainActivity.displayUserEmail =  user.getEmail();
+            MainActivity.displayUserName = user.getDisplayName();
+            MainActivity.displayUserEmail = user.getEmail();
             updateSideNav();
         } else {
             Log.d("AUTH", "Update GUI, Kein user gefunden");
@@ -173,12 +148,7 @@ public class LogInOutFragment extends Fragment {
         //mGoogleSignInClient - to prevent auto re-login
         MainActivity main = (MainActivity) getActivity();
         mGoogleSignInClient.signOut()
-                .addOnCompleteListener(main, new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        updateUILoginFragment(null);
-                    }
-                });
+                .addOnCompleteListener(main, task -> updateUILoginFragment(null));
 
         Toast.makeText(getActivity(), "Google Logout successful",
                 Toast.LENGTH_LONG).show();
@@ -194,11 +164,11 @@ public class LogInOutFragment extends Fragment {
 
     private void updateSideNav() {
         // Reset Name and email in side nav immediately
-        navigationView = ((MainActivity) getActivity()).findViewById(R.id.navigationView);
+        NavigationView navigationView = getActivity().findViewById(R.id.navigationView);
         navigationView.setNavigationItemSelectedListener(((MainActivity) getActivity()));
         View headerView = navigationView.getHeaderView(0);
-        TextView displayNameSideNav = (TextView) headerView.findViewById(R.id.displayName);
-        TextView displayEmailSideNav = (TextView) headerView.findViewById(R.id.displayEmail);
+        TextView displayNameSideNav = headerView.findViewById(R.id.displayName);
+        TextView displayEmailSideNav = headerView.findViewById(R.id.displayEmail);
         displayNameSideNav.setText(MainActivity.displayUserName);
         displayEmailSideNav.setText(MainActivity.displayUserEmail);
     }
