@@ -18,22 +18,38 @@ public class Joke  implements Parcelable {
     // documentId is only defined (and fetched) from firestore
     public String documentId;
 
-    public Joke(String text, Date postedDate, String category, String author, String authorId) {
+    public Joke(String text, Date postedDate, String category, String author, String authorId, List<Comment> arrayList) {
         this.text = text;
         this.votes = 0;
         this.postedDate = postedDate;
         this.author = author;
         this.authorId = authorId;
         this.category = category;
-        this.comments = new ArrayList<>();
+        this.comments = arrayList;
+    }
+    public Joke() {
+
     }
 
     protected Joke(Parcel in) {
         text = in.readString();
         votes = in.readInt();
+        postedDate = new Date(in.readLong());
         author = in.readString();
         authorId = in.readString();
         category = in.readString();
+        comments = in.createTypedArrayList(Comment.CREATOR);
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(text);
+        dest.writeInt(votes);
+        dest.writeLong(postedDate.getTime());
+        dest.writeString(author);
+        dest.writeString(authorId);
+        dest.writeString(category);
+        dest.writeTypedList(comments);
     }
 
     public static final Creator<Joke> CREATOR = new Creator<Joke>() {
@@ -48,9 +64,7 @@ public class Joke  implements Parcelable {
         }
     };
 
-    public Joke() {
 
-    }
 
     public String getText() {
         return text;
@@ -85,12 +99,12 @@ public class Joke  implements Parcelable {
         return 0;
     }
 
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(text);
-        dest.writeInt(votes);
-        dest.writeString(author);
-        dest.writeString(authorId);
-        dest.writeString(category);
+
+    public void JokeVoteUp() {
+        votes += 1;
+    }
+
+    public void JokeVoteDown() {
+        votes -= 1;
     }
 }
