@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -71,9 +72,9 @@ public class FragmentNewJoke extends Fragment {
         String currentCategory = getSelectedCategory().getName();
         String currentUserName = mAuth.getCurrentUser().getDisplayName();
         String currentUserId = mAuth.getCurrentUser().getUid();
-        Joke joke = new Joke(etnewJoke.getText().toString(), Calendar.getInstance().getTime(), currentCategory, currentUserName, currentUserId);
+        Joke joke = new Joke(etnewJoke.getText().toString(), Calendar.getInstance().getTime(), currentCategory, currentUserName, currentUserId, new ArrayList<Comment>());
         getSelectedCategory().addJoke(joke);
-        Log.d("SEND_JOKE", "Joke JSON: " + joke.text + " ::: " + joke.postedDate + " ::: " + joke.author);
+        Log.d("SEND_JOKE", "Joke JSON: " + joke.getText() + " ::: " + joke.getPostedDate() + " ::: " + joke.getAuthor());
         addJokeToFirebase(this.getContext(), joke);
         etnewJoke.setText("");
 
@@ -86,7 +87,7 @@ public class FragmentNewJoke extends Fragment {
                 .add(joke)
                 .addOnSuccessListener(documentReference -> {
                     Log.d("SEND_JOKE", "DocumentSnapshot added with ID: " + documentReference.getId());
-                    Toast.makeText(ctx, "Gesendet in Kategorie " + joke.category, Toast.LENGTH_LONG).show();
+                    Toast.makeText(ctx, "Gesendet in Kategorie " + joke.getCategory(), Toast.LENGTH_LONG).show();
                 })
                 .addOnFailureListener(e -> {
                     Log.d("SEND_JOKE", "Error adding document", e);

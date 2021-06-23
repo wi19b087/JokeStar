@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/tvComment"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
 
 
     <androidx.cardview.widget.CardView
@@ -45,14 +44,15 @@
                     tools:layout_editor_absoluteY="119dp" />
 
                 <TextView
-                    android:id="@+id/CommentVotes"
+                    android:id="@+id/tvCommentVotes"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_margin="5sp"
                     android:layout_gravity="center"
-                    android:textSize="21sp"
+                    android:layout_margin="5sp"
                     android:text="999"
-                    android:textStyle="bold"/>
+                    android:textSize="21sp"
+                    android:textStyle="bold" />
+
                 <Button
                     android:id="@+id/btCommentDown"
                     android:layout_width="wrap_content"

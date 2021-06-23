@@ -57,7 +57,7 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
     public class JokeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvJokeText, tvPointsTotal;
-        private Button btJokeUp, btJokeDown;
+        private Button btJokeUp, btJokeDown, btJokeComments;
 
         public JokeViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
@@ -65,9 +65,11 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
             tvPointsTotal = itemView.findViewById(R.id.tvPointsTotal);
             btJokeUp = itemView.findViewById(R.id.btJokeUp);
             btJokeDown = itemView.findViewById(R.id.btJokeDown);
+            btJokeComments = itemView.findViewById(R.id.btJokeComments);
 
             btJokeUp.setOnClickListener(this);
             btJokeDown.setOnClickListener(this);
+            btJokeComments.setOnClickListener(this);
             itemView.setOnClickListener(this);
         }
 
@@ -78,20 +80,21 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
 
         @Override
         public void onClick(View v) {
-            if (mListItemClickListener != null) {
-                int clickedIndex = getAdapterPosition();
-                Joke joke = mItems.get(clickedIndex);
-                mListItemClickListener.onListItemClick(joke);
-            }
 
             int clickedIndex = getAdapterPosition();
             Joke joke = mItems.get(clickedIndex);
             switch (v.getId()) {
                 case R.id.btJokeUp:
-                    joke.votes +=1;
+                    joke.JokeVoteUp();
                     break;
                 case R.id.btJokeDown:
-                    joke.votes -=1;
+                    joke.JokeVoteDown();
+                    break;
+                case R.id.btJokeComments:
+                    joke = mItems.get(clickedIndex);
+                    if (mListItemClickListener != null) {
+                        mListItemClickListener.onListItemClick(joke);
+                    }
                     break;
             }
             notifyDataSetChanged();
