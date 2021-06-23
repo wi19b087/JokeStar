@@ -15,4 +15,6 @@
     <string name="DEnew_joke">Neuer Witz</string>
     <string name="DEinsert_joke_here">Witz hier einfügen</string>
     <string name="DEsend">Senden</string>
+    <string name="DEPostedFrom">Hochgeladen von</string>
+    <string name="DEPostedOn">von</string>
 </resources>

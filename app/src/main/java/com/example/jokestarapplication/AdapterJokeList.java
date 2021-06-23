@@ -58,17 +58,20 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
         void onListItemClick(Joke item);
     }
 
+    public void setOnListItemClickListener(ListItemClickListener listItemClickListener) {
+        mListItemClickListener = listItemClickListener;
+    }
+
     public class JokeViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvJokeText, tvPointsTotal;
-        private Button btJokeComments, btJokeUp, btJokeDown;
+        private Button btJokeUp, btJokeDown;
 
 
         public JokeViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             tvJokeText = itemView.findViewById(R.id.tvJokeText);
             tvPointsTotal = itemView.findViewById(R.id.tvPointsTotal);
-            btJokeComments = itemView.findViewById(R.id.btJokeComments);
             btJokeUp = itemView.findViewById(R.id.btJokeUp);
             btJokeDown = itemView.findViewById(R.id.btJokeDown);
 

@@ -5,12 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,7 +23,9 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-public class ActivityCategory extends AppCompatActivity implements View.OnClickListener {
+public class ActivityCategory extends AppCompatActivity {
+
+
 
     public static final String KEY_EXTRACATEGORY = "JokeList";
     FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -49,10 +51,7 @@ public class ActivityCategory extends AppCompatActivity implements View.OnClickL
 
         // Fetch jokes for selected jokeCategory
         // List<Joke> jokesLocal = jokeCategory.getJokes(); // this is only local saved jokes
-
         fetchJokesAndSetAdapter();
-        //mAdapter = new AdapterJokeList(jokesFirestore);
-        //rvJokeList.setAdapter(mAdapter);
     }
 
     private void fetchJokesAndSetAdapter() {
@@ -91,18 +90,18 @@ public class ActivityCategory extends AppCompatActivity implements View.OnClickL
                                 Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_: " + currentJoke.text);
                                 Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_: " + currentJoke.votes);
                             }
-                            //Set Adapter
+                            //Set Adapter after all jokes are fetched
                             mAdapter = new AdapterJokeList(jokesFirestore);
                             rvJokeList.setAdapter(mAdapter);
+                            mAdapter.setOnListItemClickListener(item -> {
+                                Intent i = new Intent(ActivityCategory.this, ActivityJokeDetail.class);
+                                i.putExtra(ActivityJokeDetail.KEY_JOKEDETAILS, item);
+                                startActivity(i);
+                            });
                         } else {
                             Log.d("TAG", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-    }
-
-    @Override
-    public void onClick(View v) {
-
     }
 }
