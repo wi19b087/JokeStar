@@ -4,12 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-public class ActivityCategory extends AppCompatActivity implements View.OnClickListener {
+public class ActivityCategory extends AppCompatActivity {
 
     public static final String KEY_EXTRACATEGORY = "JokeList";
     private JokeCategory jokeCategory;
@@ -34,10 +35,11 @@ public class ActivityCategory extends AppCompatActivity implements View.OnClickL
 
         mAdapter = new AdapterJokeList(jokeCategory.getJokes());
         rvJokeList.setAdapter(mAdapter);
-    }
 
-    @Override
-    public void onClick(View v) {
-
+        mAdapter.setOnListItemClickListener(item -> {
+            Intent i = new Intent(ActivityCategory.this, ActivityJokeDetail.class);
+            i.putExtra(ActivityJokeDetail.KEY_JOKEDETAILS, item);
+            startActivity(i);
+        });
     }
 }
