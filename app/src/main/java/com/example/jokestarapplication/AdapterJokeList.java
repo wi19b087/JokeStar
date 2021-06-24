@@ -10,6 +10,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -18,6 +21,11 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
 
     private List<Joke> mItems;
     private ListItemClickListener mListItemClickListener;
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+
+
+
 
     public AdapterJokeList(List<Joke> mItems) {
         this.mItems = mItems;
@@ -55,6 +63,7 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
         private TextView tvJokeText, tvPointsTotal;
         private Button btJokeComments, btJokeUp, btJokeDown;
 
+
         public JokeViewHolder(@NonNull @NotNull View itemView) {
             super(itemView);
             tvJokeText = itemView.findViewById(R.id.tvJokeText);
@@ -83,12 +92,17 @@ public class AdapterJokeList extends RecyclerView.Adapter<AdapterJokeList.JokeVi
 
             int clickedIndex = getAdapterPosition();
             Joke joke = mItems.get(clickedIndex);
+            DocumentReference jokeRef = db.collection("Jokes").document(joke.documentId);
             switch (v.getId()) {
                 case R.id.btJokeUp:
                     joke.votes +=1;
+                    // Update vote in firestore
+                    jokeRef.update("votes", joke.votes );
                     break;
                 case R.id.btJokeDown:
                     joke.votes -=1;
+                    // Update vote in firestore
+                    jokeRef.update("votes", joke.votes );
                     break;
             }
             notifyDataSetChanged();

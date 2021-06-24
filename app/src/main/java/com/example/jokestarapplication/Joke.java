@@ -15,6 +15,8 @@ public class Joke  implements Parcelable {
     public String authorId;
     public String category;
     public List<Comment> comments;
+    // documentId is only defined (and fetched) from firestore
+    public String documentId;
 
     public Joke(String text, Date postedDate, String category, String author, String authorId) {
         this.text = text;
@@ -45,6 +47,10 @@ public class Joke  implements Parcelable {
             return new Joke[size];
         }
     };
+
+    public Joke() {
+
+    }
 
     public String getText() {
         return text;
