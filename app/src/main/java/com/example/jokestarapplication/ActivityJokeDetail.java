@@ -24,9 +24,9 @@ public class ActivityJokeDetail extends AppCompatActivity {
 
     public static final String KEY_JOKEDETAILS = "JOKEDETAILS";
     private Joke joke;
-    private TextView tvJokeText, tvJokeVote, tvAuthor, tvPostedDate;
+    private TextView tvJokeText, tvCommentVotes, tvAuthor, tvPostedDate;
     private EditText etNewComment;
-    private Button btJokeUp, btJokeDown, btSendComment;
+    private Button btCommentUp, btCommentDown, btSendComment;
     private RecyclerView recyclerView;
     private View include;
     private AdapterJokeDetail mAdapter;
@@ -45,12 +45,12 @@ public class ActivityJokeDetail extends AppCompatActivity {
         tvAuthor = findViewById(R.id.tvAuthor);
         tvPostedDate = findViewById(R.id.tvPostDate);
         tvJokeText = include.findViewById(R.id.tvCommentText);
-        tvJokeVote = include.findViewById(R.id.tvCommentVotes);
-        btJokeUp = include.findViewById(R.id.btCommentUp);
-        btJokeDown = include.findViewById(R.id.btCommentDown);
+        tvCommentVotes = include.findViewById(R.id.tvCommentVotes);
+        btCommentUp = include.findViewById(R.id.btCommentUp);
+        btCommentDown = include.findViewById(R.id.btCommentDown);
 
         tvJokeText.setText(joke.getText());
-        tvJokeVote.setText(Integer.toString(joke.getVotes()));
+        tvCommentVotes.setText(Integer.toString(joke.getVotes()));
         tvAuthor.setText(joke.getAuthor());
         tvPostedDate.setText(joke.getPostedDate().toString());
         etNewComment = findViewById(R.id.etNewComment);
@@ -71,13 +71,13 @@ public class ActivityJokeDetail extends AppCompatActivity {
             mAdapter.notifyDataSetChanged();
         });
 
-        btJokeUp.setOnClickListener(v -> {
+        btCommentUp.setOnClickListener(v -> {
             joke.JokeVoteUp();
-            tvJokeVote.setText(Integer.toString(joke.getVotes()));
+            tvCommentVotes.setText(Integer.toString(joke.getVotes()));
         });
-        btJokeDown.setOnClickListener(v -> {
+        btCommentDown.setOnClickListener(v -> {
             joke.JokeVoteDown();
-            tvJokeVote.setText(Integer.toString(joke.getVotes()));
+            tvCommentVotes.setText(Integer.toString(joke.getVotes()));
         });
     }
 
@@ -94,7 +94,7 @@ public class ActivityJokeDetail extends AppCompatActivity {
         jokeRef.update("comments",  joke.getComments())
                 .addOnSuccessListener(documentReference -> {
                     Log.d("SEND_COMMENT", "Comment added in joke ID: " + joke.documentId);
-                    Toast.makeText(this, "Kommentar hinzugefügt" + joke.getCategory(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Kommentar hinzugefügt", Toast.LENGTH_LONG).show();
                 })
                 .addOnFailureListener(e -> {
                     Log.d("SEND_COMMENT", "Error adding document", e);
