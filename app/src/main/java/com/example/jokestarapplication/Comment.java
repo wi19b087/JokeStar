@@ -7,17 +7,22 @@ public class Comment implements Parcelable {
     private String text;
     private int votes;
     private String author;
+    private String authorId;
 
-    public Comment(String text, int votes, String author) {
+    public Comment() {
+    }
+
+    public Comment(String text, int votes, String author,String authorId) {
         this.text = text;
         this.votes = votes;
-        this.author = author;
+        this.author = authorId;
     }
 
     protected Comment(Parcel in) {
         text = in.readString();
         votes = in.readInt();
         author = in.readString();
+        authorId = in.readString();
     }
 
     @Override
@@ -25,6 +30,7 @@ public class Comment implements Parcelable {
         dest.writeString(text);
         dest.writeInt(votes);
         dest.writeString(author);
+        dest.writeString(authorId);
     }
 
     @Override

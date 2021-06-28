@@ -26,7 +26,9 @@ public class Joke  implements Parcelable {
         this.authorId = authorId;
         this.category = category;
         this.comments = arrayList;
+        this.documentId = null;
     }
+
     public Joke() {
 
     }
@@ -39,6 +41,7 @@ public class Joke  implements Parcelable {
         authorId = in.readString();
         category = in.readString();
         comments = in.createTypedArrayList(Comment.CREATOR);
+        documentId = in.readString();
     }
 
     @Override
@@ -50,6 +53,7 @@ public class Joke  implements Parcelable {
         dest.writeString(authorId);
         dest.writeString(category);
         dest.writeTypedList(comments);
+        dest.writeString(documentId);
     }
 
     public static final Creator<Joke> CREATOR = new Creator<Joke>() {

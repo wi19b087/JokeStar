@@ -4,12 +4,19 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.List;
 
@@ -23,6 +30,8 @@ public class ActivityJokeDetail extends AppCompatActivity {
     private RecyclerView recyclerView;
     private View include;
     private AdapterJokeDetail mAdapter;
+    private FirebaseAuth mAuth = FirebaseAuth.getInstance();
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +39,8 @@ public class ActivityJokeDetail extends AppCompatActivity {
         setContentView(R.layout.activity_joke_detail);
 
         joke = getIntent().getParcelableExtra(KEY_JOKEDETAILS);
-
+        DocumentReference jokeRef = db.collection("Jokes").document(joke.documentId);
+        Log.d("SEND_COMMENT", "Joke to update: " + joke);
         include = findViewById(R.id.include);
         tvAuthor = findViewById(R.id.tvAuthor);
         tvPostedDate = findViewById(R.id.tvPostDate);
@@ -73,7 +83,24 @@ public class ActivityJokeDetail extends AppCompatActivity {
 
 
     private void SendComment() {
-        Comment comment = new Comment(etNewComment.getText().toString(), 0, "author"); //TODO: add author
+        String currentUserName = mAuth.getCurrentUser().getDisplayName();
+        String currentUserId = mAuth.getCurrentUser().getUid();
+        Comment comment = new Comment(etNewComment.getText().toString(), 0, currentUserName, currentUserId);
         joke.getComments().add(comment);
+        Log.d("SEND_COMMENT", "Joke to update: " + joke);
+        // Update joke with new comment in firebase
+        DocumentReference jokeRef = db.collection("Jokes").document(joke.documentId);
+
+        jokeRef.update("comments",  joke.getComments())
+                .addOnSuccessListener(documentReference -> {
+                    Log.d("SEND_COMMENT", "Comment added in joke ID: " + joke.documentId);
+                    Toast.makeText(this, "Kommentar hinzugefügt" + joke.getCategory(), Toast.LENGTH_LONG).show();
+                })
+                .addOnFailureListener(e -> {
+                    Log.d("SEND_COMMENT", "Error adding document", e);
+                    Toast.makeText(this, "Kommentar konnte nicht hinzugefügt werden!", Toast.LENGTH_LONG).show();
+                });
     }
+
+
 }

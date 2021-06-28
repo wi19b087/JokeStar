@@ -55,7 +55,7 @@ public class ActivityCategory extends AppCompatActivity {
     }
 
     private void fetchJokesAndSetAdapter() {
-        List<Joke> jokesFirestore = new ArrayList<Joke>();
+        List<Joke> jokesFromFirestore = new ArrayList<Joke>();
         db.collection("Jokes")
                 .whereEqualTo("category", jokeCategory.getName())
                 .get()
@@ -64,6 +64,7 @@ public class ActivityCategory extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
+                                /*
                                 String currentDocumentId = document.getId();
                                 //document.getData().get("author");
                                 Map jokeFromDb = document.getData();
@@ -72,12 +73,12 @@ public class ActivityCategory extends AppCompatActivity {
                                 currentJoke.author = jokeFromDb.get("author").toString();
                                 currentJoke.authorId = jokeFromDb.get("authorId").toString();
                                 currentJoke.category = jokeFromDb.get("category").toString();
-                                currentJoke.comments = (ArrayList) jokeFromDb.get("comments");
+                                currentJoke.comments = (List) jokeFromDb.get("comments");
                                 //currentJoke.postedDate = (Date) jokeFromDb.get("postedDate");
                                 currentJoke.postedDate = (Date) Calendar.getInstance().getTime();
                                 currentJoke.text = jokeFromDb.get("text").toString();
                                 currentJoke.votes = ((Long) jokeFromDb.get("votes")).intValue();
-                                jokesFirestore.add(currentJoke);
+                                jokesFromFirestore.add(currentJoke);
                                 //Log.d("TAG", document.getId() + " => " + document.getData());
                                 // Log.d("TAG", "GET_DOCS_FROM_FIRESTORE: " + document.getId() + " => " + document.getData());
                                 //Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_AUTHOR: " + document.getData().get("author"));
@@ -89,9 +90,15 @@ public class ActivityCategory extends AppCompatActivity {
                                 Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_: " + currentJoke.postedDate);
                                 Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_: " + currentJoke.text);
                                 Log.d("TAG", "GET_DOCS_FROM_FIRESTORE_: " + currentJoke.votes);
+
+                                 */
+                                Joke currentJoke = document.toObject(Joke.class);
+                                currentJoke.documentId = document.getId().toString();
+                                jokesFromFirestore.add(currentJoke);
+
                             }
                             //Set Adapter after all jokes are fetched
-                            mAdapter = new AdapterJokeList(jokesFirestore);
+                            mAdapter = new AdapterJokeList(jokesFromFirestore);
                             rvJokeList.setAdapter(mAdapter);
                             mAdapter.setOnListItemClickListener(item -> {
                                 Intent i = new Intent(ActivityCategory.this, ActivityJokeDetail.class);
