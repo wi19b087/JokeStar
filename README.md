@@ -7,6 +7,6 @@ If you look for a nice pre-built backend, checkout our [JokeStar React Backend](
 
 To run this setup, you need to install Android Studio and build the application.
 
-## Contributers
+## Contributors
 
 wi19b087@technikum-wien.at
